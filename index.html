@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cleaning Empire: Map Mode</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:#0f1720;
+color:white;
+}
+
+header{
+background:#1f8f4a;
+padding:15px;
+text-align:center;
+font-size:26px;
+font-weight:bold;
+}
+
+#layout{
+display:flex;
+height:calc(100vh - 60px);
+}
+
+/* MAP SIDE */
+#map{
+flex:2;
+background:#101826;
+padding:20px;
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:15px;
+align-content:start;
+}
+
+.city{
+background:#1f2a3a;
+padding:20px;
+border-radius:12px;
+cursor:pointer;
+text-align:center;
+transition:.2s;
+border:2px solid transparent;
+}
+
+.city:hover{
+transform:scale(1.03);
+border:2px solid #1f8f4a;
+}
+
+.locked{
+opacity:.4;
+cursor:not-allowed;
+}
+
+/* INFO PANEL */
+#panel{
+flex:1;
+background:#0b111a;
+padding:20px;
+border-left:2px solid #1f8f4a;
+}
+
+.stat{
+margin:10px 0;
+font-size:16px;
+}
+
+button{
+width:100%;
+padding:12px;
+margin-top:10px;
+border:none;
+border-radius:8px;
+background:#1f8f4a;
+color:white;
+cursor:pointer;
+font-size:15px;
+}
+
+button:hover{
+opacity:.9;
+}
+
+#log{
+margin-top:15px;
+font-size:13px;
+color:#aaa;
+height:200px;
+overflow:auto;
+background:#111a26;
+padding:10px;
+border-radius:8px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+🧼 Cleaning Empire — Map Mode
+</header>
+
+<div id="layout">
+
+<!-- MAP -->
+<div id="map">
+
+<div class="city" onclick="selectCity('Sarasota', true)">
+Sarasota<br>
+💰 $50/sec
+</div>
+
+<div class="city locked" onclick="selectCity('Tampa', false)">
+Tampa<br>
+🔒 Locked
+</div>
+
+<div class="city locked" onclick="selectCity('Orlando', false)">
+Orlando<br>
+🔒 Locked
+</div>
+
+<div class="city locked" onclick="selectCity('Miami', false)">
+Miami<br>
+🔒 Locked
+</div>
+
+</div>
+
+<!-- PANEL -->
+<div id="panel">
+
+<h2 id="cityName">Select a City</h2>
+
+<div class="stat">💵 Income: $<span id="income">0</span>/sec</div>
+<div class="stat">🧼 Cleanliness: <span id="clean">100</span>%</div>
+<div class="stat">👷 Crews: <span id="crews">1</span></div>
+<div class="stat">🚚 Trucks: <span id="trucks">1</span></div>
+
+<button onclick="sendCrew()">
+Send Crew
+</button>
+
+<button onclick="upgradeCity()">
+Upgrade City ($200)
+</button>
+
+<div id="log"></div>
+
+</div>
+
+</div>
+
+<script>
+
+let money = 0;
+
+let selectedCity = null;
+
+let cities = {
+"Sarasota": {
+income: 50,
+clean: 100,
+crews: 1,
+trucks: 1,
+unlocked: true
+},
+"Tampa": {
+income: 120,
+clean: 80,
+crews: 0,
+trucks: 0,
+unlocked: false
+},
+"Orlando": {
+income: 200,
+clean: 60,
+crews: 0,
+trucks: 0,
+unlocked: false
+},
+"Miami": {
+income: 350,
+clean: 40,
+crews: 0,
+trucks: 0,
+unlocked: false
+}
+};
+
+function log(msg){
+document.getElementById("log").innerHTML =
+msg + "<br>" + document.getElementById("log").innerHTML;
+}
+
+function selectCity(name, unlocked){
+
+if(!cities[name] || !cities[name].unlocked && !unlocked){
+log("🔒 City locked!");
+return;
+}
+
+selectedCity = name;
+
+document.getElementById("cityName").innerText = name;
+
+updatePanel();
+
+log("📍 Selected " + name);
+
+}
+
+function updatePanel(){
+
+if(!selectedCity) return;
+
+let c = cities[selectedCity];
+
+document.getElementById("income").innerText = c.income;
+document.getElementById("clean").innerText = c.clean;
+document.getElementById("crews").innerText = c.crews;
+document.getElementById("trucks").innerText = c.trucks;
+
+}
+
+function sendCrew(){
+
+if(!selectedCity) return;
+
+cities[selectedCity].clean += 5;
+
+log("👷 Crew sent to " + selectedCity);
+
+updatePanel();
+
+}
+
+function upgradeCity(){
+
+if(!selectedCity) return;
+
+if(money < 200){
+log("❌ Not enough money!");
+return;
+}
+
+money -= 200;
+
+cities[selectedCity].income += 20;
+
+log("⬆️ Upgraded " + selectedCity);
+
+updatePanel();
+
+}
+
+setInterval(()=>{
+
+for(let city in cities){
+
+if(cities[city].unlocked){
+
+money += cities[city].income;
+
+}
+
+}
+
+},1000);
+
+</script>
+
+</body>
+</html>
