@@ -1,0 +1,179 @@
+/* =========================
+   CLEANING EMPIRE MAP STYLE
+   ========================= */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, sans-serif;
+}
+
+body{
+background:#0f1720;
+color:white;
+}
+
+/* HEADER */
+header{
+background:linear-gradient(90deg,#1f8f4a,#1aa35a);
+padding:18px;
+text-align:center;
+font-size:24px;
+font-weight:bold;
+letter-spacing:1px;
+}
+
+/* MAIN LAYOUT */
+#layout{
+display:flex;
+height:calc(100vh - 70px);
+}
+
+/* =========================
+   MAP AREA
+   ========================= */
+
+#map{
+flex:2;
+background:#0c1420;
+padding:20px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+gap:15px;
+overflow-y:auto;
+}
+
+/* CITY CARD */
+.city{
+background:linear-gradient(145deg,#1a2636,#111a26);
+border:1px solid #22324a;
+border-radius:14px;
+padding:18px;
+text-align:center;
+cursor:pointer;
+transition:0.2s;
+position:relative;
+}
+
+.city:hover{
+transform:scale(1.05);
+border-color:#1f8f4a;
+box-shadow:0 0 12px rgba(31,143,74,0.4);
+}
+
+/* LOCKED CITY */
+.locked{
+opacity:0.4;
+filter:grayscale(70%);
+cursor:not-allowed;
+}
+
+/* CITY TITLE */
+.city::after{
+content:"";
+position:absolute;
+bottom:8px;
+left:50%;
+transform:translateX(-50%);
+width:60%;
+height:3px;
+background:#1f8f4a;
+border-radius:10px;
+opacity:0.3;
+}
+
+/* =========================
+   SIDE PANEL
+   ========================= */
+
+#panel{
+flex:1;
+background:#0a1018;
+border-left:2px solid #1f8f4a;
+padding:20px;
+display:flex;
+flex-direction:column;
+}
+
+/* TITLE */
+#cityName{
+margin-bottom:10px;
+color:#1f8f4a;
+}
+
+/* STATS */
+.stat{
+background:#111a26;
+padding:10px;
+margin:8px 0;
+border-radius:10px;
+border:1px solid #1f2a3a;
+}
+
+.stat span{
+color:#1f8f4a;
+font-weight:bold;
+}
+
+/* BUTTONS */
+button{
+padding:12px;
+margin-top:10px;
+border:none;
+border-radius:10px;
+background:#1f8f4a;
+color:white;
+font-size:14px;
+cursor:pointer;
+transition:0.2s;
+}
+
+button:hover{
+background:#23a85a;
+transform:scale(1.03);
+}
+
+button:active{
+transform:scale(0.98);
+}
+
+/* =========================
+   LOG SYSTEM
+   ========================= */
+
+#log{
+margin-top:15px;
+flex:1;
+overflow-y:auto;
+background:#0f1720;
+border:1px solid #1f2a3a;
+border-radius:10px;
+padding:10px;
+font-size:12px;
+color:#aaa;
+}
+
+#log br{
+margin-bottom:4px;
+}
+
+/* =========================
+   SCROLLBAR (nice UI)
+   ========================= */
+
+#map::-webkit-scrollbar,
+#log::-webkit-scrollbar{
+width:8px;
+}
+
+#map::-webkit-scrollbar-thumb,
+#log::-webkit-scrollbar-thumb{
+background:#1f8f4a;
+border-radius:10px;
+}
+
+#map::-webkit-scrollbar-track,
+#log::-webkit-scrollbar-track{
+background:#0a1018;
+}
